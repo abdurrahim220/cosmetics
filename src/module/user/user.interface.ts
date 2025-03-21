@@ -7,6 +7,7 @@ export type IUser = {
   password?: string;
   role: UserRole;
   status: UserStatus;
+  passwordChangedAt?:Date;
   address?: Types.ObjectId;
   isDeleted: boolean;
 };

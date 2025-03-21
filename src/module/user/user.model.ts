@@ -13,7 +13,7 @@ const userSchema = new Schema<IUser>(
       unique: true,
     },
     password: {
-      type: String,  
+      type: String,
     },
     role: {
       type: String,
