@@ -16,10 +16,29 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 
+const getAllUser = catchAsync(async (req, res, next) => {
+  const result = await UserServices.getAllUser();
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User retrieved successfully",
+    data: result,
+  });
+});
+
+const getSingleUser = catchAsync(async (req, res, next) => {
+  const result = await UserServices.getSingleUser(req.params.id);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User retrieved successfully",
+    data: result,
+  });
+});
+
 const verifyOtp = catchAsync(async (req, res, next) => {
   const { email, otp } = req.body;
   const result = await UserServices.verifyOtp(email, otp);
-
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -30,9 +49,7 @@ const verifyOtp = catchAsync(async (req, res, next) => {
 
 const resendOtp = catchAsync(async (req, res, next) => {
   const { email } = req.body;
-  console.log(email)
   const result = await UserServices.resendOtp(email);
-
   sendResponse(res, {
     statusCode: status.OK,
     success: true,
@@ -41,8 +58,32 @@ const resendOtp = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateUser = catchAsync(async (req, res, next) => {
+  const result = await UserServices.updateUser(req.params.id, req.body);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User updated successfully",
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req, res, next) => {
+  const result = await UserServices.deleteUser(req.params.id);
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: "User delete successfully",
+    data: result,
+  });
+});
+
 export const UserController = {
   createUser,
   verifyOtp,
-  resendOtp
+  resendOtp,
+  getAllUser,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };

@@ -22,6 +22,19 @@ const createUser = async (payload: IUser) => {
   return user;
 };
 
+const getAllUser = () => {
+  return User.find().select("-password");
+};
+const getSingleUser = async (id: string) => {
+  const result = await User.findById(id)
+    .select("-password")
+    .populate("address");
+  if (!result) {
+    throw new AppError("User not found", status.NOT_FOUND);
+  }
+  return result;
+};
+
 const verifyOtp = async (email: string, otp: number) => {
   const user = await User.findOne({
     email,
@@ -61,8 +74,30 @@ const resendOtp = async (email: string) => {
   return { message: "OTP resent successfully" };
 };
 
+const updateUser = async (userId: string, payload: Partial<IUser>) => {
+  const user = await User.findByIdAndUpdate(userId, payload, {
+    new: true,
+  }).select("-password");
+  if (!user) {
+    throw new AppError("User not found", status.NOT_FOUND);
+  }
+  return user;
+};
+
+const deleteUser = async (id: string) => {
+  const user = await User.findByIdAndDelete(id).select("-password");
+  if (!user) {
+    throw new AppError("User not found", status.NOT_FOUND);
+  }
+  return user;
+};
+
 export const UserServices = {
   createUser,
   verifyOtp,
   resendOtp,
+  getAllUser,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };
