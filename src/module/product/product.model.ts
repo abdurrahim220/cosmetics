@@ -74,7 +74,7 @@ const productSchema = new Schema<IProduct>(
     skinType: {
       type: [String],
       required: [true, "At least one skin type is required"],
-    },
+    }, 
     originalPrice: {
       type: Number,
       required: [true, "Original price is required"],

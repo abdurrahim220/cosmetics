@@ -6,4 +6,5 @@ dotenv.config({ path: path.join(process.cwd(), ".env") });
 export const config = {
   port: getEnvVar("PORT"),
   db: getEnvVar("DATABASE_ACCESS"),
+  NODE_ENV: getEnvVar("NODE_ENV"),
 };
