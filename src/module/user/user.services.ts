@@ -31,7 +31,7 @@ const getAllUser = () => {
 const getSingleUser = async (id: string) => {
   const result = await User.findById(id)
     .select("-password")
-    .populate("address");
+    // .populate("address");
   if (!result) {
     throw new AppError("User not found", status.NOT_FOUND);
   }
