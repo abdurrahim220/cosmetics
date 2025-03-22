@@ -10,7 +10,7 @@ This is the backend service for an e-commerce application built with TypeScript.
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/abdurrahim220/cosmetics
    ```
 2. Navigate to the project directory:
    ```bash
@@ -24,6 +24,7 @@ This is the backend service for an e-commerce application built with TypeScript.
 ## Usage
 
 To start the server, run:
+
 ```bash
 npm start
 ```
@@ -31,20 +32,24 @@ npm start
 ## API Endpoints
 
 ### User Module
+
 - **Register User**: `POST /api/users/register`
 - **Login User**: `POST /api/users/login`
 - **Get User Profile**: `GET /api/users/profile`
 
 ### Product Module
+
 - **Get All Products**: `GET /api/products`
 - **Get Product by ID**: `GET /api/products/:id`
 - **Create Product**: `POST /api/products`
 
 ### Order Module
+
 - **Create Order**: `POST /api/orders`
 - **Get Order by ID**: `GET /api/orders/:id`
 
 ### Banner Module
+
 - **Get All Banners**: `GET /api/banners`
 - **Create Banner**: `POST /api/banners`
 

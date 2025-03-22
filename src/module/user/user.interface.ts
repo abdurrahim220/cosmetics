@@ -19,13 +19,14 @@ export type IUser = {
 };
 
 // Instance methods
-export interface IUserMethods {
-  isPasswordMatched(plainTextPassword: string): Promise<boolean>;
-}
-
-// Static methods
-export interface IUserModel extends Model<IUser, object, IUserMethods> {
-  isUserExistsByCustomId(id: string): Promise<IUser | null>;
+export interface UserModel extends Model<IUser> {
+  //instance methods for checking if the user exist
+  isUserExistsByCustomId(id: string): Promise<IUser>;
+  //instance methods for checking if passwords are matched
+  isPasswordMatched(
+    plainTextPassword: string,
+    hashedPassword: string
+  ): Promise<boolean>;
   isJWTIssuedBeforePasswordChanged(
     passwordChangedTimestamp: Date,
     jwtIssuedTimestamp: number

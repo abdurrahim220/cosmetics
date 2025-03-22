@@ -1,17 +1,18 @@
 import { Response } from "express";
-import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import { config } from "../config";
 
 export const createToken = (
   jwtPayload: { userId: string; role: string },
   secret: Secret,
-  expiresIn: number | string = "1h",
   res?: Response
 ) => {
-  const options: SignOptions = {
-    expiresIn: expiresIn as SignOptions["expiresIn"],
-  };
-  const accessToken = jwt.sign(jwtPayload, secret, options);
-  const refreshToken = jwt.sign(jwtPayload, secret, { expiresIn: "7d" });
+  const accessToken = jwt.sign(jwtPayload, config.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+  const refreshToken = jwt.sign(jwtPayload, config.JWT_SECRET, {
+    expiresIn: "7d",
+  });
   if (res) {
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
