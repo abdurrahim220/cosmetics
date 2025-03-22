@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Types, Model } from "mongoose";
-import { UserRole, UserStatus } from "../../interface/sharedInterface";
+import { UserRole, UserStatus } from "../../types/sharedInterface";
 
 export type IUser = {
   name: string;

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import nodemailer from "nodemailer";
-import { EmailOptions } from "../interface/sharedInterface";
+import { EmailOptions } from "../types/sharedInterface";
 import AppError from "../error/appError";
 import status from "http-status";
 import { config } from "../config";
@@ -24,7 +24,6 @@ transporter.verify((error, success) => {
     console.log("gmail services is ready to send the email");
   }
 });
-
 
 export const sendEmail = async ({
   to,
@@ -54,4 +53,25 @@ export const sendVerificationOtpToEmail = async (to: string, otp: number) => {
     <p>If you didn't request this, please ignore this email.</p>
     `;
   await sendEmail({ to, subject: "Verify your email address", html });
+};
+
+export const sendForgotPasswordOtpVerificationToEmail = async (
+  to: string,
+  otp: number
+) => {
+  const html = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <h1 style="color: #333;">Welcome to BeautyStore</h1>
+        <p>We received a request to reset your password. Use the OTP below to complete the process:</p>
+        <h2 style="color: #d9534f;">${otp}</h2>
+        <p>If you didn't request this, you can safely ignore this email.</p>
+        <p>Thank you for choosing BeautyStore.</p>
+        <p>This password is valid for 5min only!</p>
+      </div>
+    `;
+  await sendEmail({
+    to,
+    subject: "Reset your password -OTP verification",
+    html,
+  });
 };

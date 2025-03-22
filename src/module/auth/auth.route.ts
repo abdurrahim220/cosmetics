@@ -10,8 +10,9 @@ router.post(
   authMiddleware(["admin", "buyer", "seller", "super-admin"]),
   AuthController.logOutUser
 );
-router.post("/", AuthController.resetUserPassword);
-router.post("/", AuthController.changeUserPassword);
+router.post("/forgot-password", AuthController.forgotPassword);
+router.post("/reset-password", AuthController.resetPassword);
+router.post("/change-password", AuthController.changeUserPassword);
 router.post("/", AuthController.refreshToken);
 
 export const authRoute = router;

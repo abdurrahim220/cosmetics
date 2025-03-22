@@ -7,7 +7,7 @@ import status from "http-status";
 import { ZodError } from "zod";
 import AppError, { ValidationError } from "../error/appError";
 import { config } from "../config";
-import { ErrorDetail, ErrorResponse, MongooseError } from "../interface/errorInterface";
+import { ErrorDetail, ErrorResponse, MongooseError } from "../types/errorInterface";
 
 
 

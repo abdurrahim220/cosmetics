@@ -3,14 +3,13 @@ import { config } from "../config";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import AppError from "../error/appError";
 import status from "http-status";
-import { UserRole } from "../interface/sharedInterface";
+import { UserRole } from "../types/sharedInterface";
 import { User } from "../module/user/user.model";
+
 
 const authMiddleware = (allowedRoles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
-
-    // console.log(token);
 
     if (!token) {
       throw new AppError(
@@ -26,10 +25,8 @@ const authMiddleware = (allowedRoles: UserRole[]) => {
 
     const { userId, iat } = decoded;
 
-    console.log(userId)
-
-    // checking if the user exists
-    const user = await User.findOne({ _id: userId }); // Fix: Use a filter object
+  
+    const user = await User.findOne({ _id: userId });
 
     if (!user) {
       throw new AppError("This user is not found 2!", status.NOT_FOUND);
@@ -59,7 +56,7 @@ const authMiddleware = (allowedRoles: UserRole[]) => {
       );
     }
 
-    req.user = decoded as JwtPayload; // Now it's safe to use `req.user`
+    req.user = decoded as JwtPayload;
     next();
   };
 };

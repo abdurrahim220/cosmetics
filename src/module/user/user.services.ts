@@ -29,9 +29,8 @@ const getAllUser = () => {
   return User.find().select("-password");
 };
 const getSingleUser = async (id: string) => {
-  const result = await User.findById(id)
-    .select("-password")
-    // .populate("address");
+  const result = await User.findById(id).select("-password");
+  // .populate("address");
   if (!result) {
     throw new AppError("User not found", status.NOT_FOUND);
   }
@@ -58,13 +57,12 @@ const verifyOtp = async (email: string, otp: number, res: Response) => {
     role: user.role,
   };
 
-  const { accessToken, refreshToken } = createToken(
+  const { accessToken } = createToken(jwtPayload, config.JWT_ACCESS_TOKEN, res);
+  const { refreshToken } = createToken(
     jwtPayload,
-    config.JWT_SECRET,
-    config.JWT_ACCESS_TOKEN,
+    config.JWT_REFRESH_TOKEN,
     res
   );
-
   user.accessToken = accessToken;
   user.refreshToken = refreshToken;
 

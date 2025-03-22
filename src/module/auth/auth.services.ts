@@ -5,6 +5,8 @@ import { ILoginUser } from "./auth.interface";
 import { createToken } from "../../utils/generateToken";
 import { config } from "../../config";
 import { Response } from "express";
+import { generateOtp } from "../../utils/generateOtp";
+import { sendForgotPasswordOtpVerificationToEmail } from "../../utils/sendEmail";
 
 const loginUser = async (payload: ILoginUser, res: Response) => {
   const { email, password } = payload;
@@ -76,14 +78,85 @@ const logOutUser = async (userId: string) => {
   return { message: "Logged out successfully" };
 };
 
-const resetUserPassword = () => {};
-const changeUserPassword = () => {};
+const forgotPassword = async (userId: string) => {
+  const user = await User.findById({ _id: userId });
+
+  if (!user) {
+    throw new AppError("User not found", status.NOT_FOUND);
+  }
+
+  const isDeleted = user?.isDeleted;
+  if (isDeleted) {
+    throw new AppError("User has been deleted", status.NOT_FOUND);
+  }
+  const userStatus = user?.status;
+
+  if (userStatus === "blocked") {
+    throw new AppError("This user is blocked ! !", status.FORBIDDEN);
+  }
+
+  const newOtp = generateOtp();
+  const otpExpiresAt = new Date(Date.now() + 5 * 60 * 1000);
+  user.otp = newOtp;
+  user.otpExpiresAt = otpExpiresAt;
+  await user.save();
+  await sendForgotPasswordOtpVerificationToEmail(user.email, newOtp);
+
+  return { message: "OTP send successfully" };
+};
+
+const resetPassword = async (otp: number, newPassword: string) => {
+  const user = await User.findOne({ otp }).exec();
+
+  if (!user) {
+    throw new AppError("Invalid OTP", status.BAD_REQUEST);
+  }
+
+  if (user.otpExpiresAt && new Date() > user.otpExpiresAt) {
+    throw new AppError("OTP has expired", status.BAD_REQUEST);
+  }
+
+  user.password = newPassword;
+  user.otp = undefined;
+  user.otpExpiresAt = undefined;
+  await user.save();
+
+  return { message: "Password reset successfully" };
+};
+
+const changeUserPassword = async (
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+) => {
+  const user = await User.findById(userId).select("+password").exec();
+
+  if (!user) {
+    throw new AppError("User not found", status.NOT_FOUND);
+  }
+
+  const isPasswordMatched = await User.isPasswordMatched(
+    currentPassword,
+    user.password
+  );
+
+  if (!isPasswordMatched) {
+    throw new AppError("Incorrect current password", status.UNAUTHORIZED);
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return { message: "Password changed successfully" };
+};
+
 const refreshToken = () => {};
 
 export const AuthService = {
   loginUser,
   logOutUser,
-  resetUserPassword,
+  resetPassword,
+  forgotPassword,
   refreshToken,
   changeUserPassword,
 };
