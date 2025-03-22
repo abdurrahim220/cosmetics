@@ -1,28 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import jwt from "jsonwebtoken";
-import { config } from "../config";
+import { Response } from "express";
+import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
 
-interface JwtPayload {
-  userId: string;
-}
+export const createToken = (
+  jwtPayload: { userId: string; role: string },
+  secret: Secret,
+  expiresIn: number | string = "1h",
+  res?: Response
+) => {
+  const options: SignOptions = {
+    expiresIn: expiresIn as SignOptions["expiresIn"],
+  };
+  const accessToken = jwt.sign(jwtPayload, secret, options);
+  const refreshToken = jwt.sign(jwtPayload, secret, { expiresIn: "7d" });
+  if (res) {
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
-const generateToken = (res: any, userId: string, role: string) => {
-  const token = jwt.sign({ userId, role }, config.JWT_SECRET, {
-    expiresIn: "7d",
-  });
-
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: config.NODE_ENV !== "development",
-    sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-  return token;
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+  }
+  return { accessToken, refreshToken };
 };
 
-export default generateToken;
-
-export const verifyToken = (token: string, secret: string) => {
+export const verifyToken = (token: string, secret: Secret) => {
   return jwt.verify(token, secret) as JwtPayload;
 };

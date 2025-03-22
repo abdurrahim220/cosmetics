@@ -38,7 +38,9 @@ const getSingleUser = catchAsync(async (req, res, next) => {
 
 const verifyOtp = catchAsync(async (req, res, next) => {
   const { email, otp } = req.body;
-  const result = await UserServices.verifyOtp(email, otp);
+  const result = await UserServices.verifyOtp(email, otp, res);
+
+  // res.cookie()
   sendResponse(res, {
     statusCode: status.OK,
     success: true,

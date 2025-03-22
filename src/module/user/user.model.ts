@@ -48,6 +48,12 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    refreshToken: {
+      type: String,
+    },
+    accessToken: {
+      type: String,
+    },
     passwordChangedAt: {
       type: Date,
     },
@@ -72,10 +78,9 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-
 userSchema.statics.isPasswordMatched = async function (
-  plainTextPassword:string,
-  hashedPassword:string
+  plainTextPassword: string,
+  hashedPassword: string
 ) {
   return await bcrypt.compare(plainTextPassword, hashedPassword);
 };

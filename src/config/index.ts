@@ -9,5 +9,7 @@ export const config = {
   NODE_ENV: getEnvVar("NODE_ENV"),
   JWT_SECRET: getEnvVar("JWT_SECRET"),
   JWT_EXPIRES_IN: getEnvVar("JWT_EXPIRES_IN"),
+  JWT_REFRESH_TOKEN: getEnvVar("JWT_REFRESH_TOKEN"),
+  JWT_ACCESS_TOKEN: getEnvVar("JWT_ACCESS_TOKEN"),
   EMAIL_USER: getEnvVar("EMAIL_USER"),
 };

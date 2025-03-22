@@ -4,6 +4,9 @@ import { generateOtp } from "../../utils/generateOtp";
 import { sendVerificationOtpToEmail } from "../../utils/sendEmail";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
+import { createToken } from "../../utils/generateToken";
+import { config } from "../../config";
+import { Response } from "express";
 
 const createUser = async (payload: IUser) => {
   const { name, email, password } = payload;
@@ -35,7 +38,7 @@ const getSingleUser = async (id: string) => {
   return result;
 };
 
-const verifyOtp = async (email: string, otp: number) => {
+const verifyOtp = async (email: string, otp: number, res: Response) => {
   const user = await User.findOne({
     email,
     otp,
@@ -45,14 +48,31 @@ const verifyOtp = async (email: string, otp: number) => {
   if (!user) {
     throw new AppError("Invalid OTP or OTP has expired", status.BAD_REQUEST);
   }
-
-  // Mark the user as verified
   user.isVerified = true;
   user.otp = undefined;
   user.otpExpiresAt = undefined;
-  await user.save();
+  const result = await user.save();
 
-  return { message: "Email verified successfully" };
+  const jwtPayload = {
+    userId: user._id.toString(),
+    role: user.role,
+  };
+
+  const { accessToken, refreshToken } = createToken(
+    jwtPayload,
+    config.JWT_SECRET,
+    config.JWT_ACCESS_TOKEN,
+    res
+  );
+
+  user.accessToken = accessToken;
+  user.refreshToken = refreshToken;
+
+  return {
+    accessToken,
+    refreshToken,
+    result,
+  };
 };
 
 const resendOtp = async (email: string) => {

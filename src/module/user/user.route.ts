@@ -8,7 +8,7 @@ router.get("/", UserController.getAllUser);
 router.get("/:id", UserController.getSingleUser);
 router.patch("/:id", UserController.updateUser);
 router.delete("/:id", UserController.deleteUser);
-router.patch("/verify-otp", UserController.verifyOtp);
-router.patch("/resend-otp", UserController.resendOtp);
+router.post("/verify-otp", UserController.verifyOtp);
+router.post("/resend-otp", UserController.resendOtp);
 
 export const userRoute = router;
