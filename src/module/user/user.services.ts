@@ -26,11 +26,15 @@ const createUser = async (payload: IUser) => {
 };
 
 const getAllUser = () => {
-  return User.find().select("-password");
+  return User.find().select("-password").populate({
+    path: "address",
+    select: "-user",
+  });
 };
 const getSingleUser = async (id: string) => {
-  const result = await User.findById(id).select("-password");
-  // .populate("address");
+  const result = await User.findById(id)
+    .select("-password")
+    .populate("address");
   if (!result) {
     throw new AppError("User not found", status.NOT_FOUND);
   }

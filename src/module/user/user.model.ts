@@ -16,7 +16,6 @@ const userSchema = new Schema<IUser, UserModel>(
     },
     password: {
       type: String,
-     
     },
     role: {
       type: String,
@@ -28,12 +27,7 @@ const userSchema = new Schema<IUser, UserModel>(
       enum: ["in-progress", "blocked", "active"],
       default: "in-progress",
     },
-    address: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Address",
-      },
-    ],
+    address: [{ type: Schema.Types.ObjectId, ref: "Address" }],
     otp: {
       type: Number,
     },
