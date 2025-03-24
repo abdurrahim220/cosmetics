@@ -5,6 +5,7 @@ import { productRoute } from "../module/product/product.route";
 import { orderRoute } from "../module/order/order.route";
 import { bannerRoute } from "../module/banner/banner.route";
 import { addressRoute } from "../module/address/address.route";
+import { ratingRoute } from "../module/rating/rating.route";
 
 const router = Router();
 const moduleRoutes = [
@@ -31,6 +32,10 @@ const moduleRoutes = [
   {
     path: "/address",
     router: addressRoute,
+  },
+  {
+    path: "/rating",
+    router: ratingRoute,
   },
 ];
 

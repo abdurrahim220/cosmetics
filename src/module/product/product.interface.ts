@@ -1,12 +1,5 @@
 import { Types } from "mongoose";
 
-export type IRating = {
-  star: 1 | 2 | 3 | 4 | 5;
-  name: string;
-  comment: string;
-  postedBy: Types.ObjectId;
-};
-
 export type IProduct = {
   _id?: Types.ObjectId;
   title: string;
@@ -23,7 +16,10 @@ export type IProduct = {
   skinType: string[];
   originalPrice: number;
   discountPrice: number;
+  averageRating?: number;
+  totalRating?: number;
+  totalReview?: number;
   inStock: number;
-  ratings: IRating;
+  ratings: Types.ObjectId[];  
   isVerified: boolean;
 };

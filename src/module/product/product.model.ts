@@ -1,26 +1,8 @@
 import { model, Schema } from "mongoose";
-import { IProduct, IRating } from "./product.interface";
+import { IProduct, } from "./product.interface";
 
-const ratingSchema = new Schema<IRating>({
-  star: {
-    type: Number,
-    enum: [1, 2, 3, 4, 5],
-    required: [true, "Rating star is required"],
-  },
-  name: {
-    type: String,
-    required: [true, "Reviewer name is required"],
-  },
-  comment: {
-    type: String,
-    required: [true, "Comment is required"],
-  },
-  postedBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "PostedBy is required"],
-  },
-});
+
+
 
 const productSchema = new Schema<IProduct>(
   {
@@ -92,7 +74,8 @@ const productSchema = new Schema<IProduct>(
     },
     ratings: [
       {
-        type: ratingSchema,
+        type: Schema.Types.ObjectId,
+        ref: "Rating",
         default: [],
       },
     ],
@@ -105,5 +88,7 @@ const productSchema = new Schema<IProduct>(
     timestamps: true,
   }
 );
+
+
 
 export const Product = model<IProduct>("Product", productSchema);
