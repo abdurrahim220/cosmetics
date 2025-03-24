@@ -35,10 +35,10 @@ const addOrUpdateAddress = async (
         await Address.create([{ ...payload, user: userId }], { session })
       )[0];
 
-      if (!user.address) {
-        user.address = [];
+      if (!user.addresses) {
+        user.addresses = [];
       }
-      user.address.push(address._id);
+      user.addresses.push(address._id);
       await user.save({ session });
     //   console.log("User address array after save:", user.address);
     }

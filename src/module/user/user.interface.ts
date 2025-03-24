@@ -9,7 +9,8 @@ export type IUser = {
   role: UserRole;
   status: UserStatus;
   passwordChangedAt?: Date;
-  address?: Types.ObjectId[];
+  addresses?: Types.ObjectId[];
+  products?: Types.ObjectId[];
   refreshToken?: string;
   otp?: number;
   otpExpiresAt?: Date;

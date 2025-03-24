@@ -6,15 +6,16 @@ import status from "http-status";
 import { UserRole } from "../types/sharedInterface";
 import { User } from "../module/user/user.model";
 
-
 const authMiddleware = (allowedRoles: UserRole[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
     if (!token) {
-      throw new AppError(
-        "Unauthorized: No token provided",
-        status.UNAUTHORIZED
+      return next(
+        new AppError(
+          "Unauthorized: You have not permission",
+          status.UNAUTHORIZED
+        )
       );
     }
 
@@ -25,20 +26,19 @@ const authMiddleware = (allowedRoles: UserRole[]) => {
 
     const { userId, iat } = decoded;
 
-  
     const user = await User.findOne({ _id: userId });
 
     if (!user) {
-      throw new AppError("This user is not found 2!", status.NOT_FOUND);
+      return next(new AppError("This user is not found 2!", status.NOT_FOUND));
     }
     const isDeleted = user?.isDeleted;
     if (isDeleted) {
-      throw new AppError("This user is deleted !", status.FORBIDDEN);
+      return next(new AppError("This user is deleted !", status.FORBIDDEN));
     }
     const userStatus = user?.status;
 
     if (userStatus === "blocked") {
-      throw new AppError("This user is blocked !", status.FORBIDDEN);
+      return next(new AppError("This user is blocked !", status.FORBIDDEN));
     }
     if (
       user.passwordChangedAt &&
@@ -47,12 +47,16 @@ const authMiddleware = (allowedRoles: UserRole[]) => {
         iat as number
       )
     ) {
-      throw new AppError("You are not authorized !", status.UNAUTHORIZED);
+      return next(
+        new AppError("You are not authorized !", status.UNAUTHORIZED)
+      );
     }
     if (allowedRoles && !allowedRoles.includes(decoded.role)) {
-      throw new AppError(
-        "Forbidden: You do not have permission to access this resource",
-        status.FORBIDDEN
+      return next(
+        new AppError(
+          "Forbidden: You do not have permission to access this resource",
+          status.FORBIDDEN
+        )
       );
     }
 

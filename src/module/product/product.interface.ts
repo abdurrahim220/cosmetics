@@ -8,6 +8,7 @@ export type IRating = {
 };
 
 export type IProduct = {
+  _id?: Types.ObjectId;
   title: string;
   user: Types.ObjectId;
   desc: string;
@@ -24,4 +25,5 @@ export type IProduct = {
   discountPrice: number;
   inStock: number;
   ratings: IRating;
+  isVerified: boolean;
 };

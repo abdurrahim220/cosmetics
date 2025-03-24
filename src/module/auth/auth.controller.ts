@@ -15,8 +15,8 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 const logOutUser = catchAsync(async (req: Request, res) => {
-  const { userId } = req.user;
-  const result = await AuthService.logOutUser(userId);
+  const id = req.user?.userId as string;
+  const result = await AuthService.logOutUser(id);
 
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
@@ -51,10 +51,10 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const changeUserPassword = catchAsync(async (req: Request, res: Response) => {
-  const { userId } = req.user;
+  const id = req.user?.userId as string;
   const { oldPassword, newPassword } = req.body;
   const result = await AuthService.changeUserPassword(
-    userId,
+    id,
     oldPassword,
     newPassword
   );

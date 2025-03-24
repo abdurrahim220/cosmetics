@@ -1,0 +1,17 @@
+export const searchableFields = [
+  "title",
+  "desc",
+  "brand",
+  "whatsInBox",
+  "img",
+  "video",
+  "wholesalePrice",
+  "wholesaleMinimumQuantity",
+  "categories",
+  "concern",
+  "skinType",
+  "originalPrice",
+  "discountPrice",
+  "inStock",
+  "ratings",
+];
