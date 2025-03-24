@@ -27,8 +27,9 @@ const userSchema = new Schema<IUser, UserModel>(
       enum: ["in-progress", "blocked", "active"],
       default: "in-progress",
     },
-    addresses: [{ type: Schema.Types.ObjectId, ref: "Address" }],
-    products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    addresses: [{ type: Schema.Types.ObjectId, ref: "Address",default:[] }],
+    products: [{ type: Schema.Types.ObjectId, ref: "Product",default:[] }],
+    banners: [{ type: Schema.Types.ObjectId, ref: "Banner" ,default:[]}],
     otp: {
       type: Number,
     },

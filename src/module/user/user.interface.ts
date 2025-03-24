@@ -15,6 +15,7 @@ export type IUser = {
   otp?: number;
   otpExpiresAt?: Date;
   isVerified: boolean;
+  banners?:Types.ObjectId[];
   accessToken?: string;
   isDeleted: boolean;
 };

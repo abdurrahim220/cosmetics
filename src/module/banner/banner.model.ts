@@ -14,6 +14,10 @@ const bannerSchema = new Schema<IBanner>(
     img: {
       type: String,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
 
   {
