@@ -4,13 +4,9 @@ import { orderController } from "./order.controller";
 
 const router = Router();
 
-router.post(
-  "/",
-  authMiddleware(["buyer"]),
-  orderController.createOrUpdateOrder
-);
+router.post("/", authMiddleware(["buyer"]), orderController.createOrder);
 
-router.post("/", authMiddleware(["buyer"]), orderController.cancelOrder);
+router.patch("/", authMiddleware(["buyer"]), orderController.cancelOrder);
 
 router.get(
   "/",
