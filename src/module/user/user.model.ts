@@ -27,9 +27,10 @@ const userSchema = new Schema<IUser, UserModel>(
       enum: ["in-progress", "blocked", "active"],
       default: "in-progress",
     },
-    addresses: [{ type: Schema.Types.ObjectId, ref: "Address",default:[] }],
-    products: [{ type: Schema.Types.ObjectId, ref: "Product",default:[] }],
-    banners: [{ type: Schema.Types.ObjectId, ref: "Banner" ,default:[]}],
+    addresses: [{ type: Schema.Types.ObjectId, ref: "Address", default: [] }],
+    products: [{ type: Schema.Types.ObjectId, ref: "Product", default: [] }],
+    banners: [{ type: Schema.Types.ObjectId, ref: "Banner", default: [] }],
+    orders: [{ type: Schema.Types.ObjectId, ref: "Order", default: [] }],
     otp: {
       type: Number,
     },

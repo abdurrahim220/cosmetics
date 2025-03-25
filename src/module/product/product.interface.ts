@@ -18,8 +18,8 @@ export type IProduct = {
   discountPrice: number;
   averageRating?: number;
   totalRating?: number;
-  totalReview?: number;
   inStock: number;
-  ratings: Types.ObjectId[];  
+  ratings?: Types.ObjectId[];  
+  orders?: Types.ObjectId[];  
   isVerified: boolean;
 };

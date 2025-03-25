@@ -11,11 +11,12 @@ export type IUser = {
   passwordChangedAt?: Date;
   addresses?: Types.ObjectId[];
   products?: Types.ObjectId[];
+  orders?: Types.ObjectId[];
   refreshToken?: string;
   otp?: number;
   otpExpiresAt?: Date;
   isVerified: boolean;
-  banners?:Types.ObjectId[];
+  banners?: Types.ObjectId[];
   accessToken?: string;
   isDeleted: boolean;
 };

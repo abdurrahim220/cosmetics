@@ -1,12 +1,10 @@
-// order.model.ts
 import { model, Schema } from "mongoose";
 import { IOrder, IOrderItem } from "./order.interface";
 
-// Define the OrderItem schema (embedded document)
 const orderItemSchema = new Schema<IOrderItem>({
-  product: {
+  products: {
     type: Schema.Types.ObjectId,
-    ref: "Product", // Reference to Product model
+    ref: "Product",
     required: [true, "Product is required"],
   },
   quantity: {
@@ -21,21 +19,39 @@ const orderItemSchema = new Schema<IOrderItem>({
   },
 });
 
-// Define the Order schema
+// const shippingAddressSchema = new Schema({
+//   city: {
+//     type: String,
+//     required: [true, "City is required"],
+//   },
+//   village: {
+//     type: String,
+//     required: [true, "Village is required"],
+//   },
+//   zip: {
+//     type: String,
+//     required: [true, "Zip is required"],
+//   },
+//   phoneNumber: {
+//     type: String,
+//     required: [true, "Phone number is required"],
+//   },
+// });
+
 const orderSchema = new Schema<IOrder>(
   {
     orderId: {
       type: String,
       required: [true, "Order ID is required"],
-      unique: true, // Ensure uniqueness
+      unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User", // Reference to User model
+      ref: "User",
       required: [true, "User is required"],
     },
     items: {
-      type: [orderItemSchema], // Array of embedded OrderItem documents
+      type: [orderItemSchema],
       required: [true, "At least one item is required"],
     },
     totalPrice: {
@@ -46,31 +62,27 @@ const orderSchema = new Schema<IOrder>(
     status: {
       type: String,
       enum: ["pending", "shipped", "delivered", "canceled"],
-      default: "pending", // Default status
+      default: "pending",
     },
-    orderDate: {
-      type: Date,
-      required: [true, "Order date is required"],
-      default: Date.now, // Default to current date/time
-    },
+
     shippingAddress: {
       type: Schema.Types.ObjectId,
-      ref: "Address", // Reference to Address model
+      ref: "Address",
       required: [true, "Shipping address is required"],
     },
     paymentMethod: {
       type: String,
-      required: false, // Optional field
+      enum: ["cod", "card"],
+      default: "cod",
     },
     isPaid: {
       type: Boolean,
-      default: false, // Default to unpaid
+      default: false,
     },
   },
   {
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
-// Create and export the Order model
 export const Order = model<IOrder>("Order", orderSchema);

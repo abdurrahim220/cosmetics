@@ -1,8 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IProduct, } from "./product.interface";
-
-
-
+import { IProduct } from "./product.interface";
 
 const productSchema = new Schema<IProduct>(
   {
@@ -79,6 +76,13 @@ const productSchema = new Schema<IProduct>(
         default: [],
       },
     ],
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+        default: [],
+      },
+    ],
     isVerified: {
       type: Boolean,
       default: false,
@@ -88,7 +92,5 @@ const productSchema = new Schema<IProduct>(
     timestamps: true,
   }
 );
-
-
 
 export const Product = model<IProduct>("Product", productSchema);
