@@ -12,6 +12,7 @@ export type IUser = {
   addresses?: Types.ObjectId[];
   products?: Types.ObjectId[];
   orders?: Types.ObjectId[];
+  wishlist?: Types.ObjectId[];
   refreshToken?: string;
   otp?: number;
   otpExpiresAt?: Date;

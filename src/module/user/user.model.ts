@@ -31,6 +31,7 @@ const userSchema = new Schema<IUser, UserModel>(
     products: [{ type: Schema.Types.ObjectId, ref: "Product", default: [] }],
     banners: [{ type: Schema.Types.ObjectId, ref: "Banner", default: [] }],
     orders: [{ type: Schema.Types.ObjectId, ref: "Order", default: [] }],
+    wishlist: [{ type: Schema.Types.ObjectId, ref: "Wishlist", default: [] }],
     otp: {
       type: Number,
     },
