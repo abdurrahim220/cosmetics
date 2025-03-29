@@ -7,6 +7,7 @@ import { bannerRoute } from "../module/banner/banner.route";
 import { addressRoute } from "../module/address/address.route";
 import { ratingRoute } from "../module/rating/rating.route";
 import { wishlistRoute } from "../module/wishlist/wishlist.route";
+import { adminRoute } from "../module/Admin/adminRoute";
 
 const router = Router();
 const moduleRoutes = [
@@ -17,6 +18,10 @@ const moduleRoutes = [
   {
     path: "/user",
     router: userRoute,
+  },
+  {
+    path: "/admin",
+    router: adminRoute,
   },
   {
     path: "/product",
