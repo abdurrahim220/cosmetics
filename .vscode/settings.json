@@ -1,7 +1,5 @@
 {
-    "cSpell.words": [
-        "ecommerce",
-        "orginal",
-        "Successfull"
-    ]
+  "cSpell.words": ["ecommerce", "orginal", "Successfull"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
