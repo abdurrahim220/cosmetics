@@ -1,7 +1,10 @@
 import status from "http-status";
 import AppError from "../../error/appError";
 import { generateOtp } from "../../utils/generateOtp";
-import { sendVerificationOtpToEmail } from "../../utils/sendEmail";
+import {
+  sendVerificationOtpToEmail,
+  sendWelcomeEmail,
+} from "../../utils/sendEmail";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
 import { createToken } from "../../utils/generateToken";
@@ -21,6 +24,8 @@ const createUser = async (payload: IUser) => {
     otpExpiresAt,
   });
   await sendVerificationOtpToEmail(email, otp);
+
+  await sendWelcomeEmail(email, name);
 
   return user;
 };

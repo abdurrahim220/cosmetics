@@ -4,8 +4,8 @@ import cors from "cors";
 import notFound from "./middleware/notFound";
 import globalErrorHandler from "./middleware/globalErrorHandler";
 import router from "./router";
-import cron from "node-cron";
-import sendWelcomeEmail from "./backendServices/emailServices/sendWelcome";
+// import cron from "node-cron";
+// import sendWelcomeEmail from "./backendServices/emailServices/sendWelcome";
 
 const app = express();
 
@@ -19,12 +19,14 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server is running!!");
 });
 
+app.set("trust proxy", true); 
+
 // backend Services/
 
-cron.schedule("* * * * *", () => {
-  console.log("running a task every minute");
-  sendWelcomeEmail();
-});
+// cron.schedule("* * * * *", () => {
+//   console.log("running a task every minute");
+//   sendWelcomeEmail();
+// });
 
 app.use(notFound);
 app.use(globalErrorHandler);

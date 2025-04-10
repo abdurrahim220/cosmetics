@@ -75,3 +75,48 @@ export const sendForgotPasswordOtpVerificationToEmail = async (
     html,
   });
 };
+
+
+
+
+export const sendWelcomeLoginEmail = async (
+  to: string,
+  username: string,
+  device: string,
+  loginTime: Date,
+  location: string
+) => {
+  // Format the login time to a readable string
+  const formattedTime = loginTime.toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZoneName: "short",
+  });
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <h1 style="color: #333;">Welcome Back to BeautyStore</h1>
+      <p>Hello ${username},</p>
+      <p>We noticed a new login to your BeautyStore account. Here are the details:</p>
+      <ul style="list-style: none; padding: 0;">
+        <li><strong>Time:</strong> ${formattedTime}</li>
+        <li><strong>Device:</strong> ${device}</li>
+        <li><strong>Location:</strong> ${location}</li>
+      </ul>
+      <p>If this was you, you can safely ignore this email. If you didn't log in, please secure your account immediately by resetting your password.</p>
+      <p>Happy shopping!</p>
+      <p>The BeautyStore Team</p>
+    </div>
+  `;
+  
+  await sendEmail({
+    to,
+    subject: "New Login to Your BeautyStore Account",
+    html,
+  });
+};

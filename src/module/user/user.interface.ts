@@ -15,6 +15,7 @@ export type IUser = {
   wishlist?: Types.ObjectId[];
   refreshToken?: string;
   otp?: number;
+  
   otpExpiresAt?: Date;
   isVerified: boolean;
   banners?: Types.ObjectId[];

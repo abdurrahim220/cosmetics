@@ -22,6 +22,7 @@ const sendWelcomeEmail = async () => {
             await User.findByIdAndUpdate(user._id, {
               status: 1,
             });
+            console.log("Email sent to", user.name);
           } catch (error) {
             console.error("Error sending email:", error);
           }

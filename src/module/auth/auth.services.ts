@@ -6,9 +6,14 @@ import { createToken } from "../../utils/generateToken";
 import { config } from "../../config";
 import { Response } from "express";
 import { generateOtp } from "../../utils/generateOtp";
-import { sendForgotPasswordOtpVerificationToEmail } from "../../utils/sendEmail";
+import {
+  sendForgotPasswordOtpVerificationToEmail,
+  sendWelcomeLoginEmail,
+} from "../../utils/sendEmail";
 
-const loginUser = async (payload: ILoginUser, res: Response) => {
+import { getDeviceInfo } from "../../utils/deviceInfo";
+
+const loginUser = async (payload: ILoginUser, res: Response, req: Request) => {
   const { email, password } = payload;
   const user = await User.findOne({ email });
   if (!user) {
@@ -51,6 +56,8 @@ const loginUser = async (payload: ILoginUser, res: Response) => {
 
   await user.save();
 
+
+    
   const userWithoutSensitiveFields = {
     _id: user._id,
     name: user.name,
@@ -60,6 +67,11 @@ const loginUser = async (payload: ILoginUser, res: Response) => {
     isVerified: user.isVerified,
   };
 
+  const deviceInfo = getDeviceInfo(req);
+  
+  const device = `${deviceInfo.deviceType} (${deviceInfo.os}) using ${deviceInfo.browser}`;
+  const location = deviceInfo.location;
+  await sendWelcomeLoginEmail(email, user.name, device, new Date(), location);
   return {
     accessToken,
     refreshToken,
