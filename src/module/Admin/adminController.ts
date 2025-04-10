@@ -5,11 +5,9 @@ import sendResponse from "../../utils/sendResponse";
 import status from "http-status";
 import { adminService } from "./adminServices";
 
-interface AuthRequest extends Request {
-  user?: { userId: string; role: string };
-}
 
-const updateUserRole = catchAsync(async (req: AuthRequest, res: Response) => {
+
+const updateUserRole = catchAsync(async (req: Request, res: Response) => {
   const { userId, role } = req.body;
   const result = await adminService.updateUserRole(userId, role);
   sendResponse(res, {
@@ -20,7 +18,7 @@ const updateUserRole = catchAsync(async (req: AuthRequest, res: Response) => {
   });
 });
 
-const updateUserStatus = catchAsync(async (req: AuthRequest, res: Response) => {
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   const { userId, userStatus } = req.body;
   const result = await adminService.updateUserStatus(userId, userStatus);
   sendResponse(res, {
@@ -31,7 +29,7 @@ const updateUserStatus = catchAsync(async (req: AuthRequest, res: Response) => {
   });
 });
 
-const verifyProduct = catchAsync(async (req: AuthRequest, res: Response) => {
+const verifyProduct = catchAsync(async (req: Request, res: Response) => {
   const { productId, isVerified } = req.body;
   const result = await adminService.verifyProduct(productId, isVerified);
   sendResponse(res, {
@@ -43,7 +41,7 @@ const verifyProduct = catchAsync(async (req: AuthRequest, res: Response) => {
 });
 
 const updateOrderStatus = catchAsync(
-  async (req: AuthRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     const { orderId,  newStatus } = req.body;
     const result = await adminService.updateOrderStatus(
       orderId,

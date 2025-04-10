@@ -3,7 +3,7 @@ import AppError from "../../error/appError";
 import { generateOtp } from "../../utils/generateOtp";
 import {
   sendVerificationOtpToEmail,
-  sendWelcomeEmail,
+  // sendWelcomeEmail,
 } from "../../utils/sendEmail";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
@@ -25,9 +25,10 @@ const createUser = async (payload: IUser) => {
   });
   await sendVerificationOtpToEmail(email, otp);
 
-  await sendWelcomeEmail(email, name);
+  // await sendWelcomeEmail(email, name);
 
   return user;
+
 };
 
 const getAllUser = () => {

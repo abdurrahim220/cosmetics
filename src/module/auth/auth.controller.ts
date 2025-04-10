@@ -4,8 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { AuthService } from "./auth.services";
 import { Request, Response } from "express";
 
-const loginUser = catchAsync(async (req:Request, res:Response) => {
-  const login = await AuthService.loginUser(req.body, res, req);
+const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const login = await AuthService.loginUser(req.body, res);
   sendResponse(res, {
     statusCode: status.OK,
     success: true,

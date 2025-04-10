@@ -8,12 +8,12 @@ import { Response } from "express";
 import { generateOtp } from "../../utils/generateOtp";
 import {
   sendForgotPasswordOtpVerificationToEmail,
-  sendWelcomeLoginEmail,
+  // sendWelcomeLoginEmail,
 } from "../../utils/sendEmail";
 
-import { getDeviceInfo } from "../../utils/deviceInfo";
+// import { getDeviceInfo } from "../../utils/deviceInfo";
 
-const loginUser = async (payload: ILoginUser, res: Response, req: Request) => {
+const loginUser = async (payload: ILoginUser, res: Response,) => {
   const { email, password } = payload;
   const user = await User.findOne({ email });
   if (!user) {
@@ -67,11 +67,11 @@ const loginUser = async (payload: ILoginUser, res: Response, req: Request) => {
     isVerified: user.isVerified,
   };
 
-  const deviceInfo = getDeviceInfo(req);
+  // const deviceInfo = getDeviceInfo(req);
   
-  const device = `${deviceInfo.deviceType} (${deviceInfo.os}) using ${deviceInfo.browser}`;
-  const location = deviceInfo.location;
-  await sendWelcomeLoginEmail(email, user.name, device, new Date(), location);
+  // const device = `${deviceInfo.deviceType} (${deviceInfo.os}) using ${deviceInfo.browser}`;
+  // const location = deviceInfo.location;
+  // await sendWelcomeLoginEmail(email, user.name, device, new Date(), location);
   return {
     accessToken,
     refreshToken,
