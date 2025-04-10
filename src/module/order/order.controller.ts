@@ -26,6 +26,7 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const cancelOrder = catchAsync(async (req: Request, res: Response) => {
   const orderId =req.body.orderId;
   const id = req.user?.userId as string;

@@ -21,7 +21,7 @@ const updateUserRole = catchAsync(async (req: AuthRequest, res: Response) => {
 });
 
 const updateUserStatus = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { userId, status: userStatus } = req.body;
+  const { userId, userStatus } = req.body;
   const result = await adminService.updateUserStatus(userId, userStatus);
   sendResponse(res, {
     statusCode: status.OK,
@@ -42,17 +42,21 @@ const verifyProduct = catchAsync(async (req: AuthRequest, res: Response) => {
   });
 });
 
-const updateOrderStatus = catchAsync(async (req: AuthRequest, res: Response) => {
-  const { orderId, status: newStatus } = req.body;
-  const sellerId = req.user?.role === "seller" ? req.user.userId : undefined;
-  const result = await adminService.updateOrderStatus(orderId, newStatus, sellerId);
-  sendResponse(res, {
-    statusCode: status.OK,
-    success: true,
-    message: "Order status updated successfully",
-    data: result,
-  });
-});
+const updateOrderStatus = catchAsync(
+  async (req: AuthRequest, res: Response) => {
+    const { orderId,  newStatus } = req.body;
+    const result = await adminService.updateOrderStatus(
+      orderId,
+      newStatus,
+    );
+    sendResponse(res, {
+      statusCode: status.OK,
+      success: true,
+      message: "Order status updated successfully",
+      data: result,
+    });
+  }
+);
 
 export const adminController = {
   updateUserRole,

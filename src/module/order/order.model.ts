@@ -19,24 +19,6 @@ const orderItemSchema = new Schema<IOrderItem>({
   },
 });
 
-// const shippingAddressSchema = new Schema({
-//   city: {
-//     type: String,
-//     required: [true, "City is required"],
-//   },
-//   village: {
-//     type: String,
-//     required: [true, "Village is required"],
-//   },
-//   zip: {
-//     type: String,
-//     required: [true, "Zip is required"],
-//   },
-//   phoneNumber: {
-//     type: String,
-//     required: [true, "Phone number is required"],
-//   },
-// });
 
 const orderSchema = new Schema<IOrder>(
   {

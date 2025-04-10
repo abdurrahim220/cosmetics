@@ -8,11 +8,12 @@ import { Address } from "../address/address.model";
 import { Product } from "../product/product.model";
 import { Order } from "./order.model";
 import QueryBuilder from "../../builder/QueryBuilder";
+import {
+  sendOrderCancellationEmail,
+  sendOrderConfirmationEmail,
+} from "../../utils/sendEmail";
 
-const createOrder = async (
-  userId: string,
-  payload: Partial<IOrder>
-) => {
+const createOrder = async (userId: string, payload: Partial<IOrder>) => {
   if (!userId) {
     throw new AppError("User not found", status.NOT_FOUND);
   }
@@ -94,6 +95,28 @@ const createOrder = async (
 
     await session.commitTransaction();
     session.endSession();
+
+    const shippingAddressString = `${address.city}, ${address.village}, ${address.zip},`;
+
+    const populatedItems = orderItems.map((item) => {
+      return {
+        products: {
+          title: products.find(
+            (p) => p._id.toString() === item.products.toString()
+          )!.title,
+        },
+        quantity: item.quantity,
+        price: item.price,
+      };
+    });
+    await sendOrderConfirmationEmail(
+      user.email,
+      user.name,
+      createOrder.orderId,
+      totalPrice,
+      shippingAddressString,
+      populatedItems
+    );
     return createOrder;
   } catch (error) {
     await session.abortTransaction();
@@ -189,10 +212,23 @@ const cancelOrder = async (orderId: string, userId: string, role: string) => {
       { $pull: { orders: order._id } },
       { session }
     );
+
     order.status = "canceled";
     await order.save({ session });
 
     await session.commitTransaction();
+
+    const userInfo = await User.findById(order.user).session(session);
+    if (!userInfo) {
+      throw new AppError("User not found", status.NOT_FOUND);
+    }
+    await sendOrderCancellationEmail(
+      userInfo.email,
+      userInfo.name,
+      order.orderId,
+      order.totalPrice
+    );
+
     return order;
   } catch (error) {
     await session.abortTransaction();

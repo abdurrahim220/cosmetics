@@ -7,12 +7,6 @@ export type IOrderItem = {
   price: number;
 };
 
-// export type shippingAddress = {
-//   city: string;
-//   village: string;
-//   zip: string;
-//   phoneNumber: string;
-// };
 
 export type IOrder = {
   _id?: Types.ObjectId;
